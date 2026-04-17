@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>For Komal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  :root {
+    --cream: #faf6f1;
+    --blush: #e8c4b0;
+    --rose: #c9846a;
+    --rose-deep: #a8624a;
+    --deep: #3b2a25;
+    --muted: #9a7b72;
+    --soft: #f2e8e0;
+    --white: #ffffff;
+    --gold: #c9a96e;
+  }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: var(--cream);
+    font-family: 'Jost', sans-serif;
+    color: var(--deep);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+ 
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; }
+ 
+  /* ── PETALS ── */
+  .petal-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .petal { position: absolute; border-radius: 50% 0 50% 0; opacity: 0; animation: fall linear infinite; }
+  @keyframes fall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.28; }
+    90%  { opacity: 0.12; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+ 
+  /* ══════════════════════════════
+     SCREEN 1 — LANDING
+  ══════════════════════════════ */
+  #screen-landing {
+    flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem; position: relative; overflow: hidden;
+    perspective: 1000px;
+  }
+  #screen-landing::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 40%, rgba(232,196,176,0.45) 0%, transparent 70%),
+      radial-gradient(ellipse 35% 25% at 15% 85%, rgba(201,132,106,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+ 
+  .landing-eyebrow {
+    font-size: 0.68rem; font-weight: 300; letter-spacing: 0.42em;
+    text-transform: uppercase; color: var(--rose); margin-bottom: 1.6rem;
+    opacity: 0; animation: fadeUp 0.9s ease 0.3s forwards; position: relative; z-index: 1;
+  }
+  .landing-title {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(3.8rem, 12vw, 9rem);
+    font-weight: 300; line-height: 0.95; color: var(--deep);
+    opacity: 0; animation: fadeUp3D 1.1s ease 0.55s forwards; position: relative; z-index: 1;
+  }
+  .landing-title em { font-style: italic; color: var(--rose); }
+ 
+  @keyframes fadeUp3D {
+    from { opacity: 0; transform: translateY(30px) translateZ(-60px) rotateX(8deg); }
+    to   { opacity: 1; transform: translateY(0) translateZ(0) rotateX(0deg); }
+  }
+ 
+  .landing-sub {
+    margin-top: 1.6rem; font-size: 0.82rem; font-weight: 200;
+    letter-spacing: 0.18em; color: var(--muted);
+    opacity: 0; animation: fadeUp 1s ease 0.8s forwards; position: relative; z-index: 1;
+  }
+ 
+  /* ── envelope button ── */
+  .open-envelope-btn {
+    margin-top: 4rem; position: relative; z-index: 1; opacity: 0;
+    animation: fadeUp 1s ease 1.1s forwards; cursor: pointer;
+    background: none; border: none; display: flex; flex-direction: column;
+    align-items: center; gap: 1.1rem;
+  }
+  .envelope-wrap {
+    position: relative; width: 155px;
+    filter: drop-shadow(0 10px 30px rgba(201,132,106,0.3)) drop-shadow(0 4px 8px rgba(59,42,37,0.1));
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), filter 0.4s ease;
+    transform-style: preserve-3d;
+  }
+  .open-envelope-btn:hover .envelope-wrap {
+    transform: scale(1.06) translateY(-6px) rotateX(4deg);
+    filter: drop-shadow(0 20px 40px rgba(201,132,106,0.45)) drop-shadow(0 8px 16px rgba(59,42,37,0.12));
+  }
+  .env-flap {
+    fill: var(--soft); stroke: var(--blush); stroke-width: 1.5;
+    transform-origin: 77px 21px; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .open-envelope-btn:hover .env-flap { transform: rotateX(-155deg); }
+  .btn-label {
+    font-size: 0.68rem; letter-spacing: 0.38em;
+    text-transform: uppercase; color: var(--rose); font-weight: 300;
+  }
+  .pulse-ring {
+    position: absolute; inset: -14px; border-radius: 14px;
+    border: 1px solid var(--blush); animation: pulse-ring 2.2s ease infinite;
+  }
+  @keyframes pulse-ring {
+    0%, 100% { transform: scale(1); opacity: 0.55; }
+    50% { transform: scale(1.08); opacity: 0.15; }
+  }
+ 
+  /* ══ ENVELOPE OVERLAY ══ */
+  .env-overlay {
+    position: fixed; inset: 0; background: var(--cream); z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; opacity: 0; transition: opacity 0.4s ease;
+    perspective: 1200px;
+  }
+  .env-overlay.opening { pointer-events: all; opacity: 1; }
+ 
+  .big-envelope {
+    width: min(340px, 80vw); position: relative;
+    animation: envAppear 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
+    transform-style: preserve-3d;
+  }
+  @keyframes envAppear {
+    from { transform: scale(0.6) translateY(40px) rotateX(12deg); opacity: 0; }
+    to   { transform: scale(1) translateY(0) rotateX(0deg); opacity: 1; }
+  }
+ 
+  .big-env-flap {
+    transform-origin: center top;
+    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    transform-style: preserve-3d;
+  }
+  .big-envelope.open .big-env-flap { transform: rotateX(-185deg); }
+ 
+  .letter-peek {
+    position: absolute; bottom: 28%; left: 50%;
+    transform: translateX(-50%) translateY(0);
+    width: 74%; height: 58%; background: var(--white);
+    border-radius: 2px;
+    box-shadow: 0 -6px 24px rgba(59,42,37,0.12), 0 2px 8px rgba(59,42,37,0.06);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.75s cubic-bezier(0.22,1,0.36,1) 0.4s; z-index: -1;
+  }
+  .big-envelope.open .letter-peek { transform: translateX(-50%) translateY(-92%); }
+  .letter-peek-text {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 0.95rem; color: var(--muted); text-align: center; padding: 1rem;
+    opacity: 0; transition: opacity 0.5s ease 0.9s; line-height: 1.7;
+  }
+  .big-envelope.open .letter-peek-text { opacity: 1; }
+ 
+  /* ══════════════════════════════
+     SCREEN 2 — LETTER
+  ══════════════════════════════ */
+  #screen-letter {
+    flex-direction: column; align-items: center;
+    padding: 5rem 1.5rem 10rem; opacity: 0; transition: opacity 0.9s ease;
+    perspective: 1400px;
+  }
+  #screen-letter.active { opacity: 1; }
+ 
+  /* paper card with 3D depth */
+  .letter-card {
+    background: var(--white); max-width: 700px; width: 100%; border-radius: 3px;
+    padding: clamp(2.8rem, 6vw, 5rem) clamp(2.2rem, 6vw, 4.5rem);
+    box-shadow:
+      0 1px 1px rgba(59,42,37,0.04),
+      0 4px 8px rgba(59,42,37,0.04),
+      0 16px 32px rgba(59,42,37,0.07),
+      0 48px 80px rgba(59,42,37,0.06),
+      0 80px 120px rgba(59,42,37,0.04);
+    position: relative; overflow: hidden;
+    transform: translateY(60px) rotateX(6deg) scale(0.97);
+    transition: transform 1.1s cubic-bezier(0.22,1,0.36,1), opacity 1s ease,
+                box-shadow 0.6s ease;
+    opacity: 0;
+    transform-style: preserve-3d;
+  }
+  .letter-card.revealed {
+    transform: translateY(0) rotateX(0deg) scale(1);
+    opacity: 1;
+    box-shadow:
+      0 1px 1px rgba(59,42,37,0.04),
+      0 4px 8px rgba(59,42,37,0.06),
+      0 20px 48px rgba(59,42,37,0.1),
+      0 60px 100px rgba(59,42,37,0.07),
+      0 100px 160px rgba(59,42,37,0.04);
+  }
+ 
+  /* paper texture overlay */
+  .letter-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--blush), var(--rose), var(--blush));
+    z-index: 2;
+  }
+  .letter-card::after {
+    content: '"'; position: absolute; top: -2rem; right: 1.5rem;
+    font-family: 'Cormorant Garamond', serif; font-size: 18rem;
+    color: rgba(232,196,176,0.18); line-height: 1; pointer-events: none; z-index: 0;
+  }
+ 
+  /* subtle paper lines */
+  .paper-lines {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image: repeating-linear-gradient(
+      to bottom, transparent, transparent 31px,
+      rgba(232,196,176,0.08) 31px, rgba(232,196,176,0.08) 32px
+    );
+    background-position: 0 4.5rem;
+  }
+ 
+  .letter-date {
+    font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 2.2rem; position: relative; z-index: 1; font-weight: 300;
+  }
+ 
+  .letter-body { position: relative; z-index: 1; }
+ 
+  .letter-body p {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(1.12rem, 2.4vw, 1.32rem);
+    font-weight: 300; line-height: 1.92; color: var(--deep); margin-bottom: 1.75rem;
+    opacity: 0; transform: translateY(20px) translateZ(-20px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .letter-body p.line-visible {
+    opacity: 1; transform: translateY(0) translateZ(0);
+  }
+  .letter-body p.highlight {
+    font-style: italic; color: var(--rose);
+    font-size: clamp(1.18rem, 2.6vw, 1.38rem);
+  }
+ 
+  /* highlighted line with warm glow */
+  .letter-body p.star-line {
+    background: linear-gradient(135deg, rgba(232,196,176,0.18), rgba(201,132,106,0.08));
+    border-left: 2px solid var(--rose);
+    padding: 0.9rem 1.2rem;
+    border-radius: 0 4px 4px 0;
+    margin-left: -1.2rem;
+    font-style: italic;
+    color: var(--rose-deep);
+  }
+ 
+  /* ── ENDING SECTION ── */
+  .letter-ending {
+    margin-top: 3.5rem;
+    border-top: 1px solid rgba(232,196,176,0.35);
+    padding-top: 3rem;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0;
+  }
+ 
+  .ending-chance {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.12rem, 2.4vw, 1.32rem);
+    font-weight: 300; color: var(--deep); line-height: 1.92;
+    margin-bottom: 1.6rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .ending-chance.line-visible { opacity: 1; transform: translateY(0); }
+ 
+  .ending-scary {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 3vw, 1.65rem);
+    font-weight: 400; color: var(--rose); line-height: 1.65;
+    margin-bottom: 1.8rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .ending-scary.line-visible { opacity: 1; transform: translateY(0); }
+ 
+  .ending-wayback {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.12rem, 2.4vw, 1.32rem);
+    font-weight: 300; color: var(--deep); line-height: 1.92;
+    margin-bottom: 1.6rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .ending-wayback.line-visible { opacity: 1; transform: translateY(0); }
+ 
+  .ending-johoga {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+    font-style: italic; font-weight: 400; color: var(--gold);
+    margin-bottom: 2.5rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .ending-johoga.line-visible { opacity: 1; transform: translateY(0); }
+ 
+  /* ── SPOTLIGHT ENDING ── */
+  .spotlight-section {
+    max-width: 700px; width: 100%; margin-top: 2rem;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 4rem 2rem 2rem;
+    position: relative;
+    opacity: 0; transform: translateY(30px) translateZ(-30px) scale(0.97);
+    transition: opacity 1s ease, transform 1.1s cubic-bezier(0.22,1,0.36,1);
+  }
+  .spotlight-section.revealed {
+    opacity: 1; transform: translateY(0) translateZ(0) scale(1);
+  }
+ 
+  .spotlight-bigdeal {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 3.2vw, 1.7rem);
+    font-weight: 300; font-style: italic;
+    color: var(--muted); line-height: 1.6;
+    margin-bottom: 2rem;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.9s ease 0.2s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.2s;
+  }
+  .spotlight-section.revealed .spotlight-bigdeal {
+    opacity: 1; transform: translateY(0);
+  }
+ 
+  .spotlight-onechance {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.6rem, 7vw, 4.2rem);
+    font-weight: 300; font-style: italic;
+    color: var(--deep); line-height: 1.1;
+    letter-spacing: -0.01em;
+    opacity: 0; transform: translateY(20px) scale(0.95);
+    transition: opacity 1.1s ease 0.7s, transform 1.2s cubic-bezier(0.22,1,0.36,1) 0.7s;
+  }
+  .spotlight-section.revealed .spotlight-onechance {
+    opacity: 1; transform: translateY(0) scale(1);
+  }
+ 
+  /* dim overlay for spotlight moment */
+  .dim-overlay {
+    position: fixed; inset: 0;
+    background: rgba(250,246,241,0.88);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 10; pointer-events: none;
+    opacity: 0; transition: opacity 1.2s ease;
+  }
+  .dim-overlay.active { opacity: 1; }
+ 
+  /* spotlight card sits above dim */
+  .spotlight-section { z-index: 20; }
+ 
+  /* ── NO RUSH ── */
+  .no-rush-area {
+    max-width: 700px; width: 100%; text-align: center;
+    margin-top: 2.5rem; padding-bottom: 5rem;
+    opacity: 0; z-index: 20; position: relative;
+    transition: opacity 1.8s ease;
+  }
+  .no-rush-area.revealed { opacity: 1; }
+  .no-rush-text {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(1rem, 2.2vw, 1.18rem); font-weight: 300;
+    color: var(--muted); letter-spacing: 0.05em;
+  }
+ 
+  /* utils */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+ 
+<div class="petal-canvas" id="petalCanvas"></div>
+<div class="dim-overlay" id="dimOverlay"></div>
+ 
+<!-- Envelope overlay -->
+<div class="env-overlay" id="envOverlay">
+  <div class="big-envelope" id="bigEnvelope">
+    <svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;overflow:visible;">
+      <defs>
+        <filter id="envShadow" x="-10%" y="-10%" width="120%" height="130%">
+          <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(59,42,37,0.18)"/>
+          <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(59,42,37,0.1)"/>
+        </filter>
+      </defs>
+      <g filter="url(#envShadow)">
+        <rect x="4" y="40" width="332" height="176" rx="4" fill="#ffffff" stroke="#e8c4b0" stroke-width="1.8"/>
+        <path d="M4 216 L170 124 L336 216" fill="#f9f0e8" stroke="#e8c4b0" stroke-width="1.5"/>
+        <path d="M4 40 L170 124 L336 40" fill="none" stroke="#e8c4b0" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/>
+        <path class="big-env-flap" d="M4 42 L170 10 L336 42 Z" fill="#f2e8e0" stroke="#e8c4b0" stroke-width="1.8"/>
+        <circle cx="170" cy="42" r="12" fill="#c9846a" opacity="0.72"/>
+        <text x="170" y="46.5" text-anchor="middle" font-size="12" fill="white" font-family="serif">✦</text>
+      </g>
+    </svg>
+    <div class="letter-peek">
+      <div class="letter-peek-text">A letter,<br/>written with care 🤍</div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ══ SCREEN 1 ══ -->
+<section class="screen active" id="screen-landing">
+  <p class="landing-eyebrow">Something I needed you to read</p>
+  <h1 class="landing-title">Hey,<br/><em>Komal.</em></h1>
+  <p class="landing-sub">There's a letter here. Just for you.</p>
+  <button class="open-envelope-btn" id="openBtn" onclick="openEnvelope()">
+    <div class="envelope-wrap">
+      <div class="pulse-ring"></div>
+      <svg viewBox="0 0 155 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;overflow:visible;">
+        <defs>
+          <filter id="smallEnvShadow">
+            <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="rgba(201,132,106,0.3)"/>
+          </filter>
+        </defs>
+        <g filter="url(#smallEnvShadow)">
+          <rect x="3" y="22" width="149" height="84" rx="3" fill="#ffffff" stroke="#e8c4b0" stroke-width="1.5"/>
+          <path class="env-flap" d="M3 24 L77 6 L151 24 Z"/>
+          <path d="M3 24 L77 60 L151 24" fill="none" stroke="#e8c4b0" stroke-width="1" opacity="0.4"/>
+          <path d="M3 106 L77 60 L151 106" fill="none" stroke="#e8c4b0" stroke-width="1" opacity="0.4"/>
+          <circle cx="77" cy="24" r="6" fill="#c9846a" opacity="0.65"/>
+        </g>
+      </svg>
+    </div>
+    <span class="btn-label">Tap to open her letter</span>
+  </button>
+</section>
+ 
+<!-- ══ SCREEN 2 ══ -->
+<section class="screen" id="screen-letter">
+  <div class="letter-card" id="letterCard">
+    <div class="paper-lines"></div>
+    <div class="letter-date">From the heart &nbsp;·&nbsp; With honesty</div>
+    <div class="letter-body" id="letterBody">
+ 
+      <p>Hey Komal, it's been a while. I just felt like reaching out today and check in and see how you've been doing. I really hope things have been a little easier for you lately.</p>
+ 
+      <p>I've had so much on my mind these past weeks — honestly, no matter what I was doing, my mind somehow kept circling back to you.</p>
+ 
+      <p>But I didn't want to reach out and add to what you were already carrying. I knew you needed space. So I stepped back, even when it was really hard, even when all I wanted was to just be there for you. But you always mattered more than my urge to talk to you.</p>
+ 
+      <p>I know whatever happened and how hard it must have been for you. I know it shakes everything. Your instincts. Your ability to trust. Your belief in people. And none of that is fair.</p>
+ 
+      <p>And I get it if you're scared. I get it if a part of you wants to keep everyone at a distance right now. You don't have to explain that to anyone, least of all me.</p>
+ 
+      <p>But Komal, please don't lose faith. I know it's hard right now, and I understand why. But don't let anyone's wrongs become the reason you stop believing in something real.</p>
+ 
+      <p>And yes, I know trust isn't something that comes easily right now, and I don't expect you to force anything.</p>
+ 
+      <p>All I can say is my intentions for you were always pure yaar. I cared about you, your happiness, your little things, your peace of mind in the most genuine way I knew how and was always excited about you.</p>
+ 
+      <p class="star-line">Putting efforts for you and showing up for you has been my favorite hobby and will always be.</p>
+ 
+      <p>And the thought of hurting you, in any way, has never even crossed the darkest corners of my mind.</p>
+ 
+      <p>But anyway, I just wanted to reach out to you today and let you know that I'm still here, still care about you, a lot, probably more than anything else in my life right now. And I really really hope you're doing mentally better than before.</p>
+ 
+      <!-- ENDING -->
+      <div class="letter-ending">
+ 
+        <div class="ending-chance">
+          And if you are in a better mental space right now,<br/>
+          please do give me a chance to talk to you once yaar.<br/>
+          Not to put you under any emotional stress —<br/>
+          I still just don't wanna leave this unsaid.
+        </div>
+ 
+        <div class="ending-scary">
+          Losing you is still the scariest part of my life.<br/>
+          And I'm hating this fact — but honestly,<br/>
+          I did nothing wrong to lose you like this.
+        </div>
+ 
+        <div class="ending-wayback">
+          So if you can — just one chance.<br/>
+          To find our way back.
+        </div>
+ 
+        <div class="ending-johoga">
+          Let's talk again, with the famous idea of yours —<br/>
+          "Jo hoga, dekha jayega."
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+ 
+  <!-- spotlight section — sits outside card, above dim -->
+  <div class="spotlight-section" id="spotlightSection">
+    <div class="spotlight-bigdeal">
+      You have always been a big deal for me,<br/>and you always will be.
+    </div>
+    <div class="spotlight-onechance">
+      One Chance,<br/>Please 🤍
+    </div>
+  </div>
+ 
+  <!-- no rush -->
+  <div class="no-rush-area" id="noRushArea">
+    <p class="no-rush-text">No rush. I'll be here.</p>
+  </div>
+ 
+</section>
+ 
+<script>
+  // ── petals ──
+  const pc = document.getElementById('petalCanvas');
+  const cols = ['#e8c4b0','#c9846a','#d4a090','#f2ddd4','#e0b8a8'];
+  for (let i = 0; i < 26; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.cssText = `left:${Math.random()*100}vw;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${9+Math.random()*14}s;animation-delay:${Math.random()*18}s;width:${5+Math.random()*9}px;height:${8+Math.random()*12}px;transform:rotate(${Math.random()*360}deg);`;
+    pc.appendChild(p);
+  }
+ 
+  // ── open envelope ──
+  function openEnvelope() {
+    document.getElementById('openBtn').style.pointerEvents = 'none';
+    const overlay = document.getElementById('envOverlay');
+    const bigEnv  = document.getElementById('bigEnvelope');
+ 
+    overlay.classList.add('opening');
+    setTimeout(() => bigEnv.classList.add('open'), 380);
+ 
+    // "written with care" stays for 3.2s before fade
+    setTimeout(() => {
+      overlay.style.transition = 'opacity 0.75s ease';
+      overlay.style.opacity = '0';
+    }, 3800);
+ 
+    setTimeout(() => {
+      overlay.classList.remove('opening');
+      overlay.style.opacity = '';
+ 
+      document.getElementById('screen-landing').classList.remove('active');
+      const ls = document.getElementById('screen-letter');
+      ls.classList.add('active');
+ 
+      setTimeout(() => {
+        ls.style.opacity = '1';
+        document.getElementById('letterCard').classList.add('revealed');
+ 
+        // stagger paragraphs
+        const paras = document.querySelectorAll('#letterBody > p');
+        paras.forEach((el, i) => {
+          setTimeout(() => el.classList.add('line-visible'), 700 + i * 320);
+        });
+ 
+        // stagger ending lines
+        const endingItems = document.querySelectorAll('.ending-chance, .ending-scary, .ending-wayback, .ending-johoga');
+        const baseDelay = 700 + paras.length * 320 + 500;
+        endingItems.forEach((el, i) => {
+          setTimeout(() => el.classList.add('line-visible'), baseDelay + i * 550);
+        });
+ 
+        // spotlight moment — dim + reveal last para
+        const spotlightDelay = baseDelay + endingItems.length * 550 + 900;
+        setTimeout(() => {
+          // dim everything
+          // document.getElementById('dimOverlay').classList.add('active');
+          // reveal spotlight
+          document.getElementById('spotlightSection').classList.add('revealed');
+ 
+          // no rush fades in after spotlight settles
+          setTimeout(() => {
+            document.getElementById('noRushArea').classList.add('revealed');
+          }, 2800);
+ 
+        }, spotlightDelay);
+ 
+      }, 100);
+    }, 4700);
+  }
+</script>
+</body>
+</html>
