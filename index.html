@@ -102,7 +102,7 @@
   }
   .big-envelope.open { transform: translateY(-55px); }
   .big-env-flap { transform-origin: center top; transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); }
-  .big-envelope.open .big-env-flap { transform: rotateX(-185deg); }
+  .big-envelope.open .big-env-flap { transform: rotateX(-185deg) translateY(50px) translateZ(-2px); }
   .letter-peek {
     position: absolute; bottom: 28%; left: 50%; transform: translateX(-50%) translateY(0);
     width: 74%; height: 58%; background: var(--white); border-radius: 2px;
@@ -113,8 +113,8 @@
   .big-envelope.open .letter-peek { transform: translateX(-50%) translateY(-92%); }
   .letter-peek-text {
     font-family: 'Cormorant Garamond', serif; font-style: italic;
-    font-size: 0.95rem; color: var(--muted); text-align: center; padding: 1rem;
-    opacity: 0; transition: opacity 0.5s ease 0.9s; line-height: 1.7;
+    font-size: 1.2rem; color: var(--muted); text-align: center; padding: 1rem;
+    opacity: 0; transition: opacity 0.5s ease 0.9s; line-height: 1.2;
   }
   .big-envelope.open .letter-peek-text { opacity: 1; }
  
