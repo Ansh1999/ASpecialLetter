@@ -530,7 +530,7 @@
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
  
-    document.querySelectorAll('.sr').forEach(el => observer.observe(el));
+    document.querySelectorAll('#section-letter .sr').forEach(el => observer.observe(el));
   }
 function goToFinal() {
   const letter = document.getElementById('section-letter');
@@ -555,6 +555,8 @@ function goToFinal() {
       document.getElementById('final4')
     ];
 
+    items.forEach(el => el.classList.remove('visible'));
+
     // HARD RESET (hide all first)
     items.forEach(el => {
       el.classList.remove('visible');
@@ -572,15 +574,15 @@ function goToFinal() {
 
       setTimeout(() => {
         items[1].classList.add('visible');
-      }, 1800);
+      }, 1000);
 
       setTimeout(() => {
         items[2].classList.add('visible');
-      }, 2600);
+      }, 1500);
 
       setTimeout(() => {
         items[3].classList.add('visible');
-      }, 3700);
+      }, 2000);
 
     }, 50); // 👈 tiny delay is IMPORTANT
 
