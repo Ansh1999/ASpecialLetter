@@ -229,7 +229,7 @@
   display: flex;
   opacity: 1;
 }
-  }
+
   #section-final::before {
     content: ''; position: absolute; inset: 0;
     background: radial-gradient(ellipse 75% 65% at 50% 50%, rgba(232,196,176,0.38) 0%, transparent 70%);
@@ -271,22 +271,27 @@
   font-size: 0.72rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--rose);
-  background: transparent;
-  border: 1px solid rgba(201,132,106,0.4);
+
+  color: white;                 /* 👈 always visible */
+  background: var(--rose);      /* 👈 always filled */
+  border: 1px solid var(--rose);
   border-radius: 999px;
+
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
   position: relative;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  
+  box-shadow: 0 10px 25px rgba(201,132,106,0.25);
+
+  animation: heartbeat 2.4s ease-in-out infinite;
 }
 
 /* hover effect */
 .continue-btn:hover {
-  background: var(--rose);
-  color: white;
-  border-color: var(--rose);
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 10px 25px rgba(201,132,106,0.25);
+  transform: scale(1.08);   /* 👈 grows instead of recolor */
+  box-shadow: 0 16px 35px rgba(201,132,106,0.35);
+  animation: none;
 }
 
 /* soft press */
@@ -458,16 +463,16 @@
  
 <!-- ══ FINAL ══ -->
 <section id="section-final">
-  <div class="final-bigdeal sr">
+  <div class="final-bigdeal sr" id="final1">
     You have always been a big deal for me,<br/>and you always will be.
   </div>
-  <div class="final-onechance sr">
+  <div class="final-onechance sr" id="final2">
     One Chance,<br/>Please 🤍
   </div>
-  <div class="cat-gif-wrap sr">
+  <div class="cat-gif-wrap sr" id="final3">
     <img src="https://media.tenor.com/f_rkpJbH1s8AAAAj/somsom1012.gif" alt="🤍"/>
   </div>
-  <div class="final-norush sr">
+  <div class="final-norush sr" id="final4">
     No pressure. No rush.<br/>I'm here, always.
   </div>
 </section>
@@ -534,7 +539,6 @@ function goToFinal() {
   // fade out letter
   letter.style.transition = 'opacity 0.6s ease';
   letter.style.opacity = '0';
-  letter.style.filter = 'blur(6px)';
 
   setTimeout(() => {
     letter.style.display = 'none';
@@ -543,8 +547,42 @@ function goToFinal() {
     final.classList.add('visible');
     window.scrollTo(0, 0);
 
-    // trigger animations again
-    initScrollReveal();
+    // GET elements
+    const items = [
+      document.getElementById('final1'),
+      document.getElementById('final2'),
+      document.getElementById('final3'),
+      document.getElementById('final4')
+    ];
+
+    // HARD RESET (hide all first)
+    items.forEach(el => {
+      el.classList.remove('visible');
+      // el.style.opacity = '0';
+      // el.style.transform = 'translateY(22px)';
+    });
+
+    // FORCE browser to apply reset before animating
+    setTimeout(() => {
+
+      // STAGGERED REVEAL
+      setTimeout(() => {
+        items[0].classList.add('visible');
+      }, 300);
+
+      setTimeout(() => {
+        items[1].classList.add('visible');
+      }, 1800);
+
+      setTimeout(() => {
+        items[2].classList.add('visible');
+      }, 2600);
+
+      setTimeout(() => {
+        items[3].classList.add('visible');
+      }, 3700);
+
+    }, 50); // 👈 tiny delay is IMPORTANT
 
   }, 600);
 }
