@@ -213,9 +213,22 @@
  
   /* ══ FINAL SECTION ══ */
   #section-final {
-    min-height: 100vh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center; padding: 5rem 2rem 7rem; position: relative;
+  min-height: 100vh;
+  display: none;              /* 👈 important */
+  opacity: 0;                 /* 👈 important */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem 7rem;
+  position: relative;
+  transition: opacity 0.8s ease;  /* 👈 smooth fade */
+}
+
+#section-final.visible {
+  display: flex;
+  opacity: 1;
+}
   }
   #section-final::before {
     content: ''; position: absolute; inset: 0;
@@ -249,6 +262,87 @@
     from { opacity: 0; transform: translateY(22px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+/* ══ CONTINUE BUTTON ══ */
+.continue-btn {
+  margin: 3.5rem 0 4rem;
+  padding: 0.9rem 2.2rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--rose);
+  background: transparent;
+  border: 1px solid rgba(201,132,106,0.4);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
+  position: relative;
+}
+
+/* hover effect */
+.continue-btn:hover {
+  background: var(--rose);
+  color: white;
+  border-color: var(--rose);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(201,132,106,0.25);
+}
+
+/* soft press */
+.continue-btn:active {
+  transform: scale(0.97);
+}
+
+.continue-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(201,132,106,0.25);
+  animation: pulseBtn 2s infinite;
+}
+
+@keyframes pulseBtn {
+  0%,100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.08); opacity: 0; }
+}
+
+/* ══ HEARTBEAT EFFECT ══ */
+.continue-btn {
+  animation: heartbeat 2.4s ease-in-out infinite;
+}
+
+/* soft expanding glow ring */
+.continue-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(201,132,106,0.25);
+  animation: heartbeat-ring 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* button "breathing" */
+@keyframes heartbeat {
+  0%   { transform: scale(1); }
+  14%  { transform: scale(1.04); }
+  28%  { transform: scale(1); }
+  42%  { transform: scale(1.04); }
+  70%  { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+/* outer glow pulse */
+@keyframes heartbeat-ring {
+  0%   { transform: scale(1); opacity: 0.4; }
+  14%  { transform: scale(1.12); opacity: 0.15; }
+  28%  { transform: scale(1); opacity: 0.35; }
+  42%  { transform: scale(1.12); opacity: 0.1; }
+  70%  { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.4; }
+}
 </style>
 </head>
 <body>
@@ -356,10 +450,10 @@
     </div>
   </div>
  
-  <div class="scroll-hint">
-    <p>continue</p>
-    <div class="scroll-line"></div>
-  </div>
+  <button class="continue-btn" onclick="goToFinal()">
+  Continue 🤍
+</button>
+</div>
 </section>
  
 <!-- ══ FINAL ══ -->
@@ -433,6 +527,27 @@
  
     document.querySelectorAll('.sr').forEach(el => observer.observe(el));
   }
+function goToFinal() {
+  const letter = document.getElementById('section-letter');
+  const final  = document.getElementById('section-final');
+
+  // fade out letter
+  letter.style.transition = 'opacity 0.6s ease';
+  letter.style.opacity = '0';
+  letter.style.filter = 'blur(6px)';
+
+  setTimeout(() => {
+    letter.style.display = 'none';
+
+    // show final section
+    final.classList.add('visible');
+    window.scrollTo(0, 0);
+
+    // trigger animations again
+    initScrollReveal();
+
+  }, 600);
+}
 </script>
 </body>
 </html>
