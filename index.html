@@ -499,25 +499,26 @@
  
     // written with care stays 3.5s
     setTimeout(() => {
-      overlay.style.transition = 'opacity 0.75s ease';
-      overlay.style.opacity = '0';
-    }, 4000);
- 
-    setTimeout(() => {
-      overlay.classList.remove('opening');
-      overlay.style.opacity = '';
-      overlay.style.transition = '';
- 
-      // swap sections
-      document.getElementById('section-landing').style.display = 'none';
-      document.getElementById('section-letter').classList.add('visible');
-      window.scrollTo(0, 0);
- 
-      // now attach IntersectionObserver to all .sr elements
-      initScrollReveal();
- 
-    }, 4900);
-  }
+  // 🔥 hide landing EARLY to prevent flash
+  document.getElementById('section-landing').style.display = 'none';
+
+  overlay.style.transition = 'opacity 0.75s ease';
+  overlay.style.opacity = '0';
+}, 4000);
+
+setTimeout(() => {
+  overlay.classList.remove('opening');
+  overlay.style.opacity = '';
+  overlay.style.transition = '';
+
+  // show letter section
+  document.getElementById('section-letter').classList.add('visible');
+  window.scrollTo(0, 0);
+
+  initScrollReveal();
+
+}, 4800); // slightly earlier = smoother
+}
  
   // ── IntersectionObserver — reveals ALL .sr elements on scroll ──
   function initScrollReveal() {
