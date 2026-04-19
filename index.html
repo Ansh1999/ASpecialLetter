@@ -29,8 +29,7 @@
     position: fixed; top: 1.4rem; left: 1.4rem; z-index: 200;
     background: rgba(250,246,241,0.85);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(232,196,176,0.5);
-    border-radius: 100px;
+    border: 1px solid rgba(232,196,176,0.5); border-radius: 100px;
     padding: 0.55rem 1.2rem 0.55rem 0.9rem;
     display: flex; align-items: center; gap: 0.5rem;
     cursor: pointer; font-family: 'Jost', sans-serif;
@@ -47,7 +46,7 @@
   .back-arrow { font-size: 0.9rem; color: var(--rose); line-height: 1; }
  
   /* ── SECTIONS ── */
-  .section { display: none; opacity: 0; transition: opacity 0.55s ease; }
+  .section { display: none; opacity: 0; transition: opacity 0.55s ease; overflow: visible; }
   .section.active { display: flex; }
   .section.fade-in { opacity: 1; }
  
@@ -71,16 +70,14 @@
   }
   .landing-title {
     font-family: 'Cormorant Garamond', serif; font-size: clamp(3.8rem, 12vw, 9rem);
-    font-weight: 300; line-height: 0.95; color: var(--deep);
-    position: relative; z-index: 1;
+    font-weight: 300; line-height: 0.95; color: var(--deep); position: relative; z-index: 1;
     opacity: 0; transition: opacity 0.9s ease 0.4s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s;
     transform: translateY(30px) rotateX(8deg);
   }
   .landing-title em { font-style: italic; color: var(--rose); }
   .landing-sub {
     margin-top: 1.6rem; font-size: clamp(0.82rem, 2vw, 1rem); font-weight: 200;
-    letter-spacing: 0.18em; color: var(--muted);
-    position: relative; z-index: 1;
+    letter-spacing: 0.18em; color: var(--muted); position: relative; z-index: 1;
     opacity: 0; transition: opacity 0.7s ease 0.65s, transform 0.7s ease 0.65s;
     transform: translateY(16px);
   }
@@ -165,31 +162,21 @@
     background: radial-gradient(ellipse 70% 60% at 50% 60%, rgba(232,196,176,0.35) 0%, transparent 70%);
     pointer-events: none;
   }
- 
-  .section {
-  overflow: visible;
-  }
-
-  .bouquet-svg {
-  filter: drop-shadow(0 8px 20px rgba(201,132,106,0.25));
-  }
-
-  /* bouquet rises from bottom */
   .bouquet-wrap {
-    opacity: 0;
-    transform: translateY(80px);
+    opacity: 0; transform: translateY(80px);
     transition: opacity 1.2s cubic-bezier(0.22,1,0.36,1), transform 1.4s cubic-bezier(0.22,1,0.36,1);
     position: relative; z-index: 2;
   }
   .bouquet-wrap.risen { opacity: 1; transform: translateY(0); }
- 
-  /* gentle sway animation */
-  .bouquet-svg { animation: sway 4s ease-in-out infinite; transform-origin: center bottom; }
+  .bouquet-svg {
+    width: clamp(240px, 55vw, 360px); height: auto; display: block;
+    animation: sway 4s ease-in-out infinite; transform-origin: center bottom;
+    filter: drop-shadow(0 15px 35px rgba(201,132,106,0.25));
+  }
   @keyframes sway {
     0%, 100% { transform: rotate(-1.5deg); }
     50%       { transform: rotate(1.5deg); }
   }
- 
   .flower-caption {
     margin-top: 2.2rem;
     font-family: 'Cormorant Garamond', serif; font-style: italic;
@@ -200,23 +187,10 @@
     position: relative; z-index: 1;
   }
   .bouquet-wrap.risen ~ .flower-caption { opacity: 1; transform: translateY(0); }
-
-  .bouquet-svg {
-  width: clamp(220px, 60vw, 360px);
-  height: auto;
-  display: block;
-  }
-  
-  .bouquet-svg {
-  width: clamp(240px, 55vw, 380px);
-  height: auto;
-  filter: drop-shadow(0 15px 35px rgba(201,132,106,0.25));
-  }
  
   /* ══ LETTER SECTION ══ */
   #section-letter {
-    flex-direction: column; align-items: center; padding: 5rem 1.5rem 0;
-    min-height: 100vh;
+    flex-direction: column; align-items: center; padding: 5rem 1.5rem 0; min-height: 100vh;
   }
   .letter-card {
     background: var(--white); max-width: 700px; width: 100%; border-radius: 3px;
@@ -243,13 +217,11 @@
     color: var(--rose); margin-bottom: 2.2rem; position: relative; z-index: 1; font-weight: 300;
   }
   .letter-body { position: relative; z-index: 1; }
- 
   .sr {
     opacity: 0; transform: translateY(22px);
     transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.22,1,0.36,1);
   }
   .sr.visible { opacity: 1; transform: translateY(0); }
- 
   .letter-body p {
     font-family: 'Cormorant Garamond', serif; font-size: clamp(1.12rem, 2.4vw, 1.32rem);
     font-weight: 300; line-height: 1.92; color: var(--deep); margin-bottom: 1.75rem;
@@ -258,7 +230,6 @@
     font-style: italic; color: var(--rose-deep);
     box-shadow: inset 0 0 20px rgba(232,196,176,0.15);
   }
- 
   .letter-ending {
     margin-top: 3.5rem; border-top: 1px solid rgba(232,196,176,0.35);
     padding-top: 3rem; display: flex; flex-direction: column; align-items: center; text-align: center;
@@ -279,16 +250,13 @@
     font-family: 'Cormorant Garamond', serif; font-size: clamp(1.2rem, 2.8vw, 1.5rem);
     font-style: italic; font-weight: 400; color: var(--gold); margin-bottom: 0;
   }
- 
   .continue-btn {
-    margin: 3.5rem 0 5rem;
-    padding: 0.9rem 2.2rem;
+    margin: 3.5rem 0 5rem; padding: 0.9rem 2.2rem;
     font-family: 'Jost', sans-serif; font-size: 0.72rem;
     letter-spacing: 0.35em; text-transform: uppercase;
     color: white; background: var(--rose);
     border: none; border-radius: 999px; cursor: pointer;
-    box-shadow: 0 10px 25px rgba(201,132,106,0.25);
-    position: relative;
+    box-shadow: 0 10px 25px rgba(201,132,106,0.25); position: relative;
     animation: heartbeat 2.4s ease-in-out infinite;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
@@ -319,6 +287,16 @@
     background: radial-gradient(ellipse 75% 65% at 50% 50%, rgba(232,196,176,0.38) 0%, transparent 70%);
     pointer-events: none;
   }
+ 
+  /* thanks for showing up — top of final */
+  .final-thankyou {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.78rem, 1.8vw, 0.95rem);
+    font-weight: 300; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 3.5rem;
+    position: relative; z-index: 1;
+  }
+ 
   .final-bigdeal {
     font-family: 'Cormorant Garamond', serif; font-size: clamp(1.3rem, 3.2vw, 1.75rem);
     font-weight: 300; font-style: italic; color: var(--muted); line-height: 1.65;
@@ -329,14 +307,23 @@
     font-weight: 300; font-style: italic; color: var(--deep); line-height: 1.08;
     letter-spacing: -0.01em; margin-bottom: 3rem; position: relative; z-index: 1;
   }
-  .cat-gif-wrap { margin-bottom: 3.5rem; position: relative; z-index: 1; }
+  .cat-gif-wrap { margin-bottom: 2.5rem; position: relative; z-index: 1; }
   .cat-gif-wrap img {
     width: clamp(120px, 20vw, 200px); border-radius: 50%;
     box-shadow: 0 12px 40px rgba(201,132,106,0.3);
   }
+ 
+  /* lawyer joke */
+  .final-lawyer {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(1rem, 2.2vw, 1.18rem); font-weight: 300;
+    color: var(--rose-deep); letter-spacing: 0.04em; line-height: 1.7;
+    margin-bottom: 2rem; position: relative; z-index: 1;
+  }
+ 
   .final-norush {
     font-family: 'Cormorant Garamond', serif; font-style: italic;
-    font-size: clamp(1rem, 2.2vw, 1.2rem); font-weight: 300;
+    font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 300;
     color: var(--muted); letter-spacing: 0.06em; line-height: 1.8; position: relative; z-index: 1;
   }
  
@@ -405,83 +392,52 @@
  
 <!-- ══ FLOWERS ══ -->
 <section class="section" id="section-flowers">
- 
   <div class="bouquet-wrap" id="bouquetWrap">
-    <!-- SVG Bougainvillea Bouquet -->
-    <svg class="bouquet-svg" width="320" height="420" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+    <svg class="bouquet-svg" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
  
-       
-    <!-- 🌿 STEM STRUCTURE -->
-<g stroke="#4e6f3c" stroke-linecap="round" fill="none">
-  <path d="M160 420 Q150 330 140 260" stroke-width="3"/>
-  <path d="M160 420 Q170 330 180 260" stroke-width="3"/>
-  <path d="M160 420 Q160 320 160 250" stroke-width="3.5"/>
-
-  <!-- small branches -->
-  <path d="M150 300 Q135 270 120 240" stroke-width="2"/>
-  <path d="M170 300 Q185 270 200 240" stroke-width="2"/>
-</g>
-
-<!-- 🍃 LEAVES -->
-<g fill="#7aaa60">
-  <ellipse cx="145" cy="300" rx="10" ry="6" transform="rotate(-30 145 300)"/>
-  <ellipse cx="175" cy="300" rx="10" ry="6" transform="rotate(30 175 300)"/>
-  <ellipse cx="130" cy="270" rx="8" ry="5" transform="rotate(-40 130 270)"/>
-  <ellipse cx="190" cy="270" rx="8" ry="5" transform="rotate(40 190 270)"/>
-</g>
-
-<!-- 🌸 FLOWERS (clustered, layered) -->
-
-<!-- center big -->
-<g transform="translate(160, 240)">
-  <ellipse rx="26" ry="18" fill="#ff4d88"/>
-  <ellipse cx="14" cy="-6" rx="24" ry="16" fill="#ff6fa0"/>
-  <ellipse cx="-14" cy="-6" rx="24" ry="16" fill="#e63973"/>
-  <circle r="6" fill="white"/>
-</g>
-
-<!-- left cluster -->
-<g transform="translate(120, 250)">
-  <ellipse rx="20" ry="14" fill="#ff5c8a"/>
-  <ellipse cx="-10" cy="-6" rx="18" ry="12" fill="#ff7aa5"/>
-  <circle r="4.5" fill="white"/>
-</g>
-
-<g transform="translate(100, 230)">
-  <ellipse rx="16" ry="11" fill="#e63973"/>
-  <ellipse cx="8" cy="-5" rx="14" ry="10" fill="#ff6fa0"/>
-  <circle r="3.5" fill="white"/>
-</g>
-
-<!-- right cluster -->
-<g transform="translate(200, 250)">
-  <ellipse rx="20" ry="14" fill="#ff5c8a"/>
-  <ellipse cx="10" cy="-6" rx="18" ry="12" fill="#ff7aa5"/>
-  <circle r="4.5" fill="white"/>
-</g>
-
-<g transform="translate(220, 230)">
-  <ellipse rx="16" ry="11" fill="#e63973"/>
-  <ellipse cx="-8" cy="-5" rx="14" ry="10" fill="#ff6fa0"/>
-  <circle r="3.5" fill="white"/>
-</g>
-
-<!-- top soft bloom -->
-<g transform="translate(160, 210)">
-  <ellipse rx="18" ry="12" fill="#ff7aa5" opacity="0.9"/>
-  <ellipse cx="10" cy="-5" rx="16" ry="10" fill="#ff4d88" opacity="0.9"/>
-  <circle r="4" fill="white"/>
-</g>    
+      <!-- stems -->
+      <g stroke="#4e6f3c" stroke-linecap="round" fill="none">
+        <path d="M160 420 Q150 330 140 260" stroke-width="3"/>
+        <path d="M160 420 Q170 330 180 260" stroke-width="3"/>
+        <path d="M160 420 Q160 320 160 250" stroke-width="3.5"/>
+        <path d="M150 300 Q135 270 120 240" stroke-width="2"/>
+        <path d="M170 300 Q185 270 200 240" stroke-width="2"/>
+      </g>
+ 
+      <!-- leaves -->
+      <g fill="#7aaa60">
+        <ellipse cx="145" cy="300" rx="10" ry="6" transform="rotate(-30 145 300)"/>
+        <ellipse cx="175" cy="300" rx="10" ry="6" transform="rotate(30 175 300)"/>
+        <ellipse cx="130" cy="270" rx="8" ry="5" transform="rotate(-40 130 270)"/>
+        <ellipse cx="190" cy="270" rx="8" ry="5" transform="rotate(40 190 270)"/>
+      </g>
+ 
+      <!-- 🌸 emoji flowers using foreignObject -->
+      <!-- center big -->
+      <text x="145" y="258" font-size="42" text-anchor="middle">🌸</text>
+      <text x="147" y="232" font-size="28" text-anchor="middle">🌸</text>
+      <text x="172" y="232" font-size="28" text-anchor="middle">🌸</text>
+      <!-- surrounding -->
+      <text x="108" y="252" font-size="32" text-anchor="middle" transform="rotate(-15 108 252)">🌸</text>
+      <text x="182" y="252" font-size="32" text-anchor="middle" transform="rotate(15 182 252)">🌸</text>
+      <text x="122" y="228" font-size="28" text-anchor="middle" transform="rotate(-20 122 228)">🌸</text>
+      <text x="198" y="230" font-size="28" text-anchor="middle" transform="rotate(20 198 228)">🌸</text>
+      <text x="210" y="246" font-size="28" text-anchor="middle" transform="rotate(20 198 228)">🌸</text>
+      <!-- top cluster -->
+      <text x="145" y="210" font-size="34" text-anchor="middle" transform="rotate(-10 145 210)">🌸</text>
+      <text x="175" y="210" font-size="34" text-anchor="middle" transform="rotate(10 175 210)">🌸</text>
+      <text x="160" y="192" font-size="38" text-anchor="middle">🌸</text>
+      <!-- outer small -->
+      <text x="98" y="238" font-size="22" text-anchor="middle" transform="rotate(-25 98 238)">🌸</text>
+      <text x="222" y="238" font-size="22" text-anchor="middle" transform="rotate(25 222 238)">🌸</text>
+      <text x="160" y="175" font-size="26" text-anchor="middle">🌸</text>
  
       <!-- ribbon at base -->
       <path d="M140 390 Q160 382 180 390 Q170 400 160 398 Q150 400 140 390Z" fill="#e8c4b0" opacity="0.8"/>
       <path d="M148 390 Q160 395 172 390" stroke="#c9846a" stroke-width="1.2" fill="none" opacity="0.6"/>
- 
     </svg>
   </div>
- 
   <p class="flower-caption" id="flowerCaption">For you, before you read this.</p>
- 
 </section>
  
 <!-- ══ LETTER ══ -->
@@ -509,7 +465,7 @@
  
       <p class="sr">Putting in effort for you and showing up for you has been my favorite thing, and it always will be.<br/>And the thought of hurting you in any way has never crossed my mind, not even in my worst thoughts and it never will.</p>
  
-      <p class="sr star-line">So, I’m not someone who would give you reasons to doubt, I’d rather be someone you can feel steady and safe around.</p>
+      <p class="sr star-line">So, I'm not someone who would give you reasons to doubt, I'd rather be someone you can feel steady and safe around.</p>
  
       <p class="sr">But anyway, I just wanted to reach out to you today and let you know that I'm still here, still care about you, a lot, probably more than anything else in my life right now. And I really really hope you're doing mentally better than before.</p>
  
@@ -541,18 +497,33 @@
  
 <!-- ══ FINAL ══ -->
 <section class="section" id="section-final">
+ 
+  <!--
+  <div class="final-thankyou sr" id="final0">
+    Thanks for showing up here.<br/>It means a lot to me.
+  </div>
+  -->
+ 
   <div class="final-bigdeal sr" id="final1">
     You have always been a big deal for me,<br/>and you always will be.
   </div>
+ 
   <div class="final-onechance sr" id="final2">
     One Chance,<br/>Please 🤍
   </div>
+ 
   <div class="cat-gif-wrap sr" id="final3">
     <img src="https://media.tenor.com/f_rkpJbH1s8AAAAj/somsom1012.gif" alt="🤍"/>
   </div>
-  <div class="final-norush sr" id="final4">
+ 
+  <div class="final-lawyer sr" id="final4">
+    Thanks for bearing with me this far. I guess I’ll rest my case now 😄
+  </div>
+ 
+  <div class="final-norush sr" id="final5">
     No pressure. No rush.<br/>I'm here, always.
   </div>
+ 
 </section>
  
 <script>
@@ -636,15 +607,12 @@
   }
  
   function resetFlowers() {
-  const wrap = document.getElementById('bouquetWrap');
-  const caption = document.getElementById('flowerCaption');
-
-  wrap.classList.remove('risen');
-
-  // REMOVE inline styles so CSS animation can work again
-  caption.style.opacity = '';
-  caption.style.transform = '';
-}
+    const wrap = document.getElementById('bouquetWrap');
+    const caption = document.getElementById('flowerCaption');
+    wrap.classList.remove('risen');
+    caption.style.opacity = '';
+    caption.style.transform = '';
+  }
  
   // ── BACK ──
   function goBack() {
@@ -682,7 +650,9 @@
   }
  
   function resetFinalAnimations() {
-    ['final1','final2','final3','final4'].forEach(id => document.getElementById(id).classList.remove('visible'));
+    ['final0','final1','final2','final3','final4','final5'].forEach(id => {
+      document.getElementById(id).classList.remove('visible');
+    });
   }
  
   // ── OPEN ENVELOPE ──
@@ -715,11 +685,7 @@
         currentScreen = 'flowers';
         updateBackBtn();
         showSection('section-flowers', () => {
-          // bouquet rises after a beat
-          setTimeout(() => {
-            document.getElementById('bouquetWrap').classList.add('risen');
-          }, 300);
-          // auto-transition to letter after 4.5s
+          setTimeout(() => document.getElementById('bouquetWrap').classList.add('risen'), 300);
           setTimeout(() => {
             hideSection('section-flowers', () => {
               currentScreen = 'letter';
@@ -753,8 +719,8 @@
       updateBackBtn();
       resetFinalAnimations();
       showSection('section-final', () => {
-        const delays = [200, 900, 1600, 2300];
-        ['final1','final2','final3','final4'].forEach((id, i) => {
+        const delays = [150, 800, 1500, 2200, 3000, 3700];
+        ['final0','final1','final2','final3','final4','final5'].forEach((id, i) => {
           setTimeout(() => document.getElementById(id).classList.add('visible'), delays[i]);
         });
       });
