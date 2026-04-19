@@ -288,15 +288,6 @@
     pointer-events: none;
   }
  
-  /* thanks for showing up — top of final */
-  .final-thankyou {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(0.78rem, 1.8vw, 0.95rem);
-    font-weight: 300; letter-spacing: 0.35em; text-transform: uppercase;
-    color: var(--rose); margin-bottom: 3.5rem;
-    position: relative; z-index: 1;
-  }
- 
   .final-bigdeal {
     font-family: 'Cormorant Garamond', serif; font-size: clamp(1.3rem, 3.2vw, 1.75rem);
     font-weight: 300; font-style: italic; color: var(--muted); line-height: 1.65;
@@ -325,6 +316,7 @@
     font-family: 'Cormorant Garamond', serif; font-style: italic;
     font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 300;
     color: var(--muted); letter-spacing: 0.06em; line-height: 1.8; position: relative; z-index: 1;
+    margin-bottom: 2.5rem;
   }
  
   @keyframes fadeUp {
@@ -498,10 +490,6 @@
 <!-- ══ FINAL ══ -->
 <section class="section" id="section-final">
  
-  <div class="final-thankyou sr" id="final0">
-    Thanks for showing up here.<br/>It means a lot to me.
-  </div>
- 
   <div class="final-bigdeal sr" id="final1">
     You have always been a big deal for me,<br/>and you always will be.
   </div>
@@ -514,12 +502,12 @@
     <img src="https://media.tenor.com/f_rkpJbH1s8AAAAj/somsom1012.gif" alt="🤍"/>
   </div>
  
-  <div class="final-lawyer sr" id="final4">
-    Thanks for bearing with me this far. I guess I’ll rest my case now 😄
+  <div class="final-norush sr" id="final4">
+    No pressure. No rush.<br/>I'm here, always.
   </div>
  
-  <div class="final-norush sr" id="final5">
-    No pressure. No rush.<br/>I'm here, always.
+  <div class="final-lawyer sr" id="final5">
+    Thanks for bearing with me this far.<br/>I guess I’ll rest my case now, Your Honour.😄
   </div>
  
 </section>
@@ -648,7 +636,7 @@
   }
  
   function resetFinalAnimations() {
-    ['final0','final1','final2','final3','final4','final5'].forEach(id => {
+    ['final1','final2','final3','final4','final5'].forEach(id => {
       document.getElementById(id).classList.remove('visible');
     });
   }
@@ -717,8 +705,8 @@
       updateBackBtn();
       resetFinalAnimations();
       showSection('section-final', () => {
-        const delays = [150, 800, 1500, 2200, 3000, 3700];
-        ['final0','final1','final2','final3','final4','final5'].forEach((id, i) => {
+        const delays = [150, 800, 1500, 2200, 3000];
+        ['final1','final2','final3','final4','final5'].forEach((id, i) => {
           setTimeout(() => document.getElementById(id).classList.add('visible'), delays[i]);
         });
       });
