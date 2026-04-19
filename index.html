@@ -46,14 +46,9 @@
   .back-btn:active { transform: scale(0.97); }
   .back-arrow { font-size: 0.9rem; color: var(--rose); line-height: 1; }
  
-  /* ── SECTIONS — all hidden by default ── */
-  .section {
-    display: none; opacity: 0;
-    transition: opacity 0.55s ease;
-  }
-  .section.active {
-    display: flex; 
-  }
+  /* ── SECTIONS ── */
+  .section { display: none; opacity: 0; transition: opacity 0.55s ease; }
+  .section.active { display: flex; }
   .section.fade-in { opacity: 1; }
  
   /* ══ LANDING ══ */
@@ -95,15 +90,12 @@
     opacity: 0; transition: opacity 0.7s ease 0.85s, transform 0.7s ease 0.85s;
     transform: translateY(16px);
   }
- 
-  /* when landing is active+fadein, animate children in */
   #section-landing.active.fade-in .landing-eyebrow,
   #section-landing.active.fade-in .landing-title,
   #section-landing.active.fade-in .landing-sub,
   #section-landing.active.fade-in .open-envelope-btn {
     opacity: 1; transform: translateY(0) rotateX(0deg);
   }
- 
   .envelope-wrap {
     position: relative; width: 155px;
     filter: drop-shadow(0 10px 30px rgba(201,132,106,0.3)) drop-shadow(0 4px 8px rgba(59,42,37,0.1));
@@ -162,6 +154,65 @@
   }
   .big-envelope.open .letter-peek-text { opacity: 1; }
  
+  /* ══ FLOWER SCREEN ══ */
+  #section-flowers {
+    min-height: 100vh; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 2rem; position: relative;
+  }
+  #section-flowers::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 60%, rgba(232,196,176,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+ 
+  .section {
+  overflow: visible;
+  }
+
+  .bouquet-svg {
+  filter: drop-shadow(0 8px 20px rgba(201,132,106,0.25));
+  }
+
+  /* bouquet rises from bottom */
+  .bouquet-wrap {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 1.2s cubic-bezier(0.22,1,0.36,1), transform 1.4s cubic-bezier(0.22,1,0.36,1);
+    position: relative; z-index: 2;
+  }
+  .bouquet-wrap.risen { opacity: 1; transform: translateY(0); }
+ 
+  /* gentle sway animation */
+  .bouquet-svg { animation: sway 4s ease-in-out infinite; transform-origin: center bottom; }
+  @keyframes sway {
+    0%, 100% { transform: rotate(-1.5deg); }
+    50%       { transform: rotate(1.5deg); }
+  }
+ 
+  .flower-caption {
+    margin-top: 2.2rem;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(1.1rem, 2.8vw, 1.45rem); font-weight: 300;
+    color: var(--muted); letter-spacing: 0.04em; line-height: 1.6;
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s;
+    position: relative; z-index: 1;
+  }
+  .bouquet-wrap.risen ~ .flower-caption { opacity: 1; transform: translateY(0); }
+
+  .bouquet-svg {
+  width: clamp(220px, 60vw, 360px);
+  height: auto;
+  display: block;
+  }
+  
+  .bouquet-svg {
+  width: clamp(240px, 55vw, 380px);
+  height: auto;
+  filter: drop-shadow(0 15px 35px rgba(201,132,106,0.25));
+  }
+ 
   /* ══ LETTER SECTION ══ */
   #section-letter {
     flex-direction: column; align-items: center; padding: 5rem 1.5rem 0;
@@ -193,7 +244,6 @@
   }
   .letter-body { position: relative; z-index: 1; }
  
-  /* scroll reveal */
   .sr {
     opacity: 0; transform: translateY(22px);
     transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.22,1,0.36,1);
@@ -204,16 +254,11 @@
     font-family: 'Cormorant Garamond', serif; font-size: clamp(1.12rem, 2.4vw, 1.32rem);
     font-weight: 300; line-height: 1.92; color: var(--deep); margin-bottom: 1.75rem;
   }
-
   .letter-body p.star-line {
-    /* background: linear-gradient(135deg, rgba(232,196,176,0.2), rgba(201,132,106,0.08));
-    border-left: 2px solid var(--rose); padding: 0.9rem 1.2rem;
-    border-radius: 0 4px 4px 0; margin-left: -1.2rem; */
     font-style: italic; color: var(--rose-deep);
     box-shadow: inset 0 0 20px rgba(232,196,176,0.15);
   }
  
-  /* ending */
   .letter-ending {
     margin-top: 3.5rem; border-top: 1px solid rgba(232,196,176,0.35);
     padding-top: 3rem; display: flex; flex-direction: column; align-items: center; text-align: center;
@@ -235,7 +280,6 @@
     font-style: italic; font-weight: 400; color: var(--gold); margin-bottom: 0;
   }
  
-  /* continue button */
   .continue-btn {
     margin: 3.5rem 0 5rem;
     padding: 0.9rem 2.2rem;
@@ -306,7 +350,6 @@
  
 <div class="petal-canvas" id="petalCanvas"></div>
  
-<!-- back button -->
 <button class="back-btn" id="backBtn" onclick="goBack()">
   <span class="back-arrow">←</span>
   <span>Back</span>
@@ -358,6 +401,87 @@
     </div>
     <span class="btn-label">Tap to open your letter</span>
   </button>
+</section>
+ 
+<!-- ══ FLOWERS ══ -->
+<section class="section" id="section-flowers">
+ 
+  <div class="bouquet-wrap" id="bouquetWrap">
+    <!-- SVG Bougainvillea Bouquet -->
+    <svg class="bouquet-svg" width="320" height="420" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+ 
+       
+    <!-- 🌿 STEM STRUCTURE -->
+<g stroke="#4e6f3c" stroke-linecap="round" fill="none">
+  <path d="M160 420 Q150 330 140 260" stroke-width="3"/>
+  <path d="M160 420 Q170 330 180 260" stroke-width="3"/>
+  <path d="M160 420 Q160 320 160 250" stroke-width="3.5"/>
+
+  <!-- small branches -->
+  <path d="M150 300 Q135 270 120 240" stroke-width="2"/>
+  <path d="M170 300 Q185 270 200 240" stroke-width="2"/>
+</g>
+
+<!-- 🍃 LEAVES -->
+<g fill="#7aaa60">
+  <ellipse cx="145" cy="300" rx="10" ry="6" transform="rotate(-30 145 300)"/>
+  <ellipse cx="175" cy="300" rx="10" ry="6" transform="rotate(30 175 300)"/>
+  <ellipse cx="130" cy="270" rx="8" ry="5" transform="rotate(-40 130 270)"/>
+  <ellipse cx="190" cy="270" rx="8" ry="5" transform="rotate(40 190 270)"/>
+</g>
+
+<!-- 🌸 FLOWERS (clustered, layered) -->
+
+<!-- center big -->
+<g transform="translate(160, 240)">
+  <ellipse rx="26" ry="18" fill="#ff4d88"/>
+  <ellipse cx="14" cy="-6" rx="24" ry="16" fill="#ff6fa0"/>
+  <ellipse cx="-14" cy="-6" rx="24" ry="16" fill="#e63973"/>
+  <circle r="6" fill="white"/>
+</g>
+
+<!-- left cluster -->
+<g transform="translate(120, 250)">
+  <ellipse rx="20" ry="14" fill="#ff5c8a"/>
+  <ellipse cx="-10" cy="-6" rx="18" ry="12" fill="#ff7aa5"/>
+  <circle r="4.5" fill="white"/>
+</g>
+
+<g transform="translate(100, 230)">
+  <ellipse rx="16" ry="11" fill="#e63973"/>
+  <ellipse cx="8" cy="-5" rx="14" ry="10" fill="#ff6fa0"/>
+  <circle r="3.5" fill="white"/>
+</g>
+
+<!-- right cluster -->
+<g transform="translate(200, 250)">
+  <ellipse rx="20" ry="14" fill="#ff5c8a"/>
+  <ellipse cx="10" cy="-6" rx="18" ry="12" fill="#ff7aa5"/>
+  <circle r="4.5" fill="white"/>
+</g>
+
+<g transform="translate(220, 230)">
+  <ellipse rx="16" ry="11" fill="#e63973"/>
+  <ellipse cx="-8" cy="-5" rx="14" ry="10" fill="#ff6fa0"/>
+  <circle r="3.5" fill="white"/>
+</g>
+
+<!-- top soft bloom -->
+<g transform="translate(160, 210)">
+  <ellipse rx="18" ry="12" fill="#ff7aa5" opacity="0.9"/>
+  <ellipse cx="10" cy="-5" rx="16" ry="10" fill="#ff4d88" opacity="0.9"/>
+  <circle r="4" fill="white"/>
+</g>    
+ 
+      <!-- ribbon at base -->
+      <path d="M140 390 Q160 382 180 390 Q170 400 160 398 Q150 400 140 390Z" fill="#e8c4b0" opacity="0.8"/>
+      <path d="M148 390 Q160 395 172 390" stroke="#c9846a" stroke-width="1.2" fill="none" opacity="0.6"/>
+ 
+    </svg>
+  </div>
+ 
+  <p class="flower-caption" id="flowerCaption">For you, before you read this.</p>
+ 
 </section>
  
 <!-- ══ LETTER ══ -->
@@ -443,27 +567,19 @@
   }
  
   // ── state ──
-  // screens: 'landing' | 'letter' | 'final'
   let currentScreen = 'landing';
   let letterScrollObserver = null;
   let envelopeOpened = false;
  
-  // ── show/hide back button ──
   function updateBackBtn() {
     const btn = document.getElementById('backBtn');
-    if (currentScreen === 'landing') {
-      btn.classList.remove('show');
-    } else {
-      btn.classList.add('show');
-    }
+    currentScreen === 'landing' ? btn.classList.remove('show') : btn.classList.add('show');
   }
  
-  // ── generic screen transition ──
   function showSection(id, callback) {
     const el = document.getElementById(id);
     el.classList.add('active');
     window.scrollTo(0, 0);
-    // tiny delay so display:flex kicks in before opacity transition
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         el.classList.add('fade-in');
@@ -481,7 +597,7 @@
     }, 550);
   }
  
-  // ── envelope inner HTML template ──
+  // ── envelope HTML template ──
   const ENVELOPE_HTML = `
     <svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;overflow:visible;">
       <defs>
@@ -503,38 +619,51 @@
       <div class="letter-peek-text">A letter,<br/>written with care 🤍</div>
     </div>`;
  
-  // ── reset envelope to closed state ──
   function resetEnvelope() {
     const overlay = document.getElementById('envOverlay');
     const openBtn = document.getElementById('openBtn');
- 
-    // reset overlay
     overlay.classList.remove('opening');
     overlay.style.opacity = '';
     overlay.style.transition = '';
- 
-    // fully replace bigEnvelope with a fresh copy — zero state, zero transition memory
     const oldEnv = document.getElementById('bigEnvelope');
     const newEnv = document.createElement('div');
     newEnv.className = 'big-envelope';
     newEnv.id = 'bigEnvelope';
     newEnv.innerHTML = ENVELOPE_HTML;
     oldEnv.parentNode.replaceChild(newEnv, oldEnv);
- 
-    // re-enable button
     openBtn.style.pointerEvents = '';
     envelopeOpened = false;
   }
  
-  // ── BACK BUTTON ──
+  function resetFlowers() {
+  const wrap = document.getElementById('bouquetWrap');
+  const caption = document.getElementById('flowerCaption');
+
+  wrap.classList.remove('risen');
+
+  // REMOVE inline styles so CSS animation can work again
+  caption.style.opacity = '';
+  caption.style.transform = '';
+}
+ 
+  // ── BACK ──
   function goBack() {
-    if (currentScreen === 'letter') {
-      hideSection('section-letter', () => {
+    if (currentScreen === 'flowers') {
+      hideSection('section-flowers', () => {
         currentScreen = 'landing';
         updateBackBtn();
-        resetLetterAnimations();
         resetEnvelope();
+        resetFlowers();
         showSection('section-landing');
+      });
+    } else if (currentScreen === 'letter') {
+      hideSection('section-letter', () => {
+        currentScreen = 'flowers';
+        updateBackBtn();
+        resetLetterAnimations();
+        showSection('section-flowers', () => {
+          setTimeout(() => document.getElementById('bouquetWrap').classList.add('risen'), 200);
+        });
       });
     } else if (currentScreen === 'final') {
       hideSection('section-final', () => {
@@ -542,51 +671,36 @@
         updateBackBtn();
         resetFinalAnimations();
         resetLetterAnimations();
-        showSection('section-letter', () => {
-          initScrollReveal();
-        });
+        showSection('section-letter', () => { initScrollReveal(); });
       });
     }
   }
  
-  // ── reset letter animations ──
   function resetLetterAnimations() {
-    document.querySelectorAll('#section-letter .sr').forEach(el => {
-      el.classList.remove('visible');
-    });
-    if (letterScrollObserver) {
-      letterScrollObserver.disconnect();
-      letterScrollObserver = null;
-    }
+    document.querySelectorAll('#section-letter .sr').forEach(el => el.classList.remove('visible'));
+    if (letterScrollObserver) { letterScrollObserver.disconnect(); letterScrollObserver = null; }
   }
  
-  // ── reset final animations ──
   function resetFinalAnimations() {
-    ['final1','final2','final3','final4'].forEach(id => {
-      document.getElementById(id).classList.remove('visible');
-    });
+    ['final1','final2','final3','final4'].forEach(id => document.getElementById(id).classList.remove('visible'));
   }
  
   // ── OPEN ENVELOPE ──
   function openEnvelope() {
     if (envelopeOpened) return;
     envelopeOpened = true;
- 
     const openBtn = document.getElementById('openBtn');
     openBtn.style.pointerEvents = 'none';
- 
     const overlay = document.getElementById('envOverlay');
     const bigEnv  = document.getElementById('bigEnvelope');
  
-    // re-trigger envAppear animation fresh
     bigEnv.style.animation = 'none';
-    bigEnv.offsetHeight; // force reflow
+    bigEnv.offsetHeight;
     bigEnv.style.animation = '';
  
     overlay.classList.add('opening');
     setTimeout(() => bigEnv.classList.add('open'), 380);
  
-    // written with care stays ~2s
     setTimeout(() => {
       document.getElementById('section-landing').classList.remove('fade-in');
       overlay.style.transition = 'opacity 0.6s ease';
@@ -598,19 +712,29 @@
       overlay.style.opacity = '';
       overlay.style.transition = '';
       hideSection('section-landing', () => {
-        currentScreen = 'letter';
+        currentScreen = 'flowers';
         updateBackBtn();
-        showSection('section-letter', () => {
-          initScrollReveal();
+        showSection('section-flowers', () => {
+          // bouquet rises after a beat
+          setTimeout(() => {
+            document.getElementById('bouquetWrap').classList.add('risen');
+          }, 300);
+          // auto-transition to letter after 4.5s
+          setTimeout(() => {
+            hideSection('section-flowers', () => {
+              currentScreen = 'letter';
+              updateBackBtn();
+              showSection('section-letter', () => { initScrollReveal(); });
+            });
+          }, 4500);
         });
       });
     }, 3100);
   }
  
-  // ── SCROLL REVEAL for letter ──
+  // ── SCROLL REVEAL ──
   function initScrollReveal() {
     if (letterScrollObserver) letterScrollObserver.disconnect();
- 
     letterScrollObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -619,10 +743,7 @@
         }
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
- 
-    document.querySelectorAll('#section-letter .sr').forEach(el => {
-      letterScrollObserver.observe(el);
-    });
+    document.querySelectorAll('#section-letter .sr').forEach(el => letterScrollObserver.observe(el));
   }
  
   // ── GO TO FINAL ──
@@ -631,20 +752,16 @@
       currentScreen = 'final';
       updateBackBtn();
       resetFinalAnimations();
- 
       showSection('section-final', () => {
-        // stagger final lines
         const delays = [200, 900, 1600, 2300];
         ['final1','final2','final3','final4'].forEach((id, i) => {
-          setTimeout(() => {
-            document.getElementById(id).classList.add('visible');
-          }, delays[i]);
+          setTimeout(() => document.getElementById(id).classList.add('visible'), delays[i]);
         });
       });
     });
   }
  
-  // ── INIT — show landing on load ──
+  // ── INIT ──
   showSection('section-landing');
 </script>
 </body>
