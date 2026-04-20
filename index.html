@@ -342,6 +342,73 @@
     from { opacity: 0; transform: translateY(22px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  .flower-next {
+  margin-top: 2.8rem;
+
+  display: inline-flex;              /* row layout */
+  align-items: center;
+  gap: 0.6rem;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* text */
+.arrow-text {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+
+  transition: transform 0.3s ease;   /* needed for movement */
+}
+
+/* arrow */
+.arrow-icon {
+  font-size: 1.4rem;
+  color: var(--rose);
+
+  transition: transform 0.3s ease;
+}
+
+/* show after bouquet */
+.bouquet-wrap.risen ~ .flower-next {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 🔥 hover effect — BOTH move together */
+.flower-next:hover .arrow-text,
+.flower-next:hover .arrow-icon {
+  transform: translateX(6px);
+}
+  
+/* show after bouquet */
+.bouquet-wrap.risen ~ .flower-next {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* subtle hover */
+.flower-next:hover .arrow-icon {
+  transform: translateX(4px);
+}
+
+/* show arrow after bouquet appears */
+.bouquet-wrap.risen ~ .flower-next {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.flower-next:hover {
+  transform: translateY(-3px) scale(1.1);
+}
 </style>
 </head>
 <body>
@@ -407,6 +474,10 @@
     <img src="flower.jpeg" alt="Flowers" class="bouquet-img">
   </div>
   <p class="flower-caption" id="flowerCaption">For you, before you read this.</p>
+  <button class="flower-next" id="flowerNext" onclick="goToLetter()">
+  <span class="arrow-text">Tap to read</span>
+  <span class="arrow-icon">→</span>
+</button>
 </section>
  
 <!-- ══ LETTER ══ -->
@@ -620,47 +691,47 @@
  
   // ── OPEN ENVELOPE ──
   function openEnvelope() {
-    if (envelopeOpened) return;
-    envelopeOpened = true;
-    const openBtn = document.getElementById('openBtn');
-    openBtn.style.pointerEvents = 'none';
-    const overlay = document.getElementById('envOverlay');
-    const bigEnv  = document.getElementById('bigEnvelope');
- 
-    bigEnv.style.animation = 'none';
-    bigEnv.offsetHeight;
-    bigEnv.style.animation = '';
- 
-    overlay.classList.add('opening');
-    setTimeout(() => bigEnv.classList.add('open'), 380);
- 
-    setTimeout(() => {
-      document.getElementById('section-landing').classList.remove('fade-in');
-      overlay.style.transition = 'opacity 0.6s ease';
-      overlay.style.opacity = '0';
-    }, 2400);
- 
-    setTimeout(() => {
-      overlay.classList.remove('opening');
-      overlay.style.opacity = '';
-      overlay.style.transition = '';
-      hideSection('section-landing', () => {
-        currentScreen = 'flowers';
-        updateBackBtn();
-        showSection('section-flowers', () => {
-          setTimeout(() => document.getElementById('bouquetWrap').classList.add('risen'), 300);
-          setTimeout(() => {
-            hideSection('section-flowers', () => {
-              currentScreen = 'letter';
-              updateBackBtn();
-              showSection('section-letter', () => { initScrollReveal(); });
-            });
-          }, 4500);
-        });
+  if (envelopeOpened) return;
+  envelopeOpened = true;
+
+  const openBtn = document.getElementById('openBtn');
+  openBtn.style.pointerEvents = 'none';
+
+  const overlay = document.getElementById('envOverlay');
+  const bigEnv  = document.getElementById('bigEnvelope');
+
+  bigEnv.style.animation = 'none';
+  bigEnv.offsetHeight;
+  bigEnv.style.animation = '';
+
+  overlay.classList.add('opening');
+  setTimeout(() => bigEnv.classList.add('open'), 380);
+
+  setTimeout(() => {
+    document.getElementById('section-landing').classList.remove('fade-in');
+    overlay.style.transition = 'opacity 0.6s ease';
+    overlay.style.opacity = '0';
+  }, 2400);
+
+  setTimeout(() => {
+    overlay.classList.remove('opening');
+    overlay.style.opacity = '';
+    overlay.style.transition = '';
+
+    hideSection('section-landing', () => {
+      currentScreen = 'flowers';
+      updateBackBtn();
+
+      showSection('section-flowers', () => {
+        // only show flowers — no auto move
+        setTimeout(() => {
+          document.getElementById('bouquetWrap').classList.add('risen');
+        }, 300);
       });
-    }, 3100);
-  }
- 
+    });
+
+  }, 3100);
+} 
   // ── SCROLL REVEAL ──
   function initScrollReveal() {
     if (letterScrollObserver) letterScrollObserver.disconnect();
@@ -692,6 +763,16 @@
  
   // ── INIT ──
   showSection('section-landing');
+
+  function goToLetter() {
+  hideSection('section-flowers', () => {
+    currentScreen = 'letter';
+    updateBackBtn();
+    showSection('section-letter', () => {
+      initScrollReveal();
+    });
+  });
+}
 </script>
 </body>
 </html>
