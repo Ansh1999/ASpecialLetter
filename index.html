@@ -169,13 +169,28 @@
   }
   .bouquet-wrap.risen { opacity: 1; transform: translateY(0); }
   .bouquet-img {
-  width: clamp(240px, 55vw, 360px);
-  height: auto;
+  width: clamp(240px, 55vw, 320px);
+  aspect-ratio: 1 / 1;              /* makes it square */
+  object-fit: cover;                /* fills square nicely */
+  
   display: block;
+
+  background: var(--cream);
+  padding: 10px;
+
+  /* soft blend effect */
+  mix-blend-mode: multiply;         /* blends with cream background */
+  opacity: 0.95;
+
+  /* aesthetic softness */
+  border-radius: 16px;
+  filter: brightness(1.02) contrast(0.95);
+
+  /* subtle shadow so it doesn’t disappear */
+  box-shadow: 0 20px 45px rgba(201,132,106,0.18);
+
   animation: sway 4s ease-in-out infinite;
   transform-origin: center bottom;
-  filter: drop-shadow(0 15px 35px rgba(201,132,106,0.25));
-  border-radius: 12px; /* optional, makes it softer */
 }
   @keyframes sway {
     0%, 100% { transform: rotate(-1.5deg); }
