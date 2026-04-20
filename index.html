@@ -169,26 +169,26 @@
   }
   .bouquet-wrap.risen { opacity: 1; transform: translateY(0); }
   .bouquet-img {
-  width: clamp(240px, 55vw, 320px);
-  aspect-ratio: 1 / 1;              /* makes it square */
-  object-fit: cover;                /* fills square nicely */
-  
+  width: clamp(180px, 35vw, 240px);  /* smaller size */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+
   display: block;
 
-  background: var(--cream);
-  padding: 10px;
+  /* 🔵 circular shape */
+  border-radius: 50%;
 
-  /* soft blend effect */
-  mix-blend-mode: multiply;         /* blends with cream background */
-  opacity: 0.95;
+  /* 🌫 stronger blending */
+  mix-blend-mode: soft-light;
+  opacity: 0.88;
 
-  /* aesthetic softness */
-  border-radius: 16px;
-  filter: brightness(1.02) contrast(0.95);
+  /* 🌸 softer edges */
+  filter: brightness(1.05) contrast(0.9) saturate(0.95);
 
-  /* subtle shadow so it doesn’t disappear */
-  box-shadow: 0 20px 45px rgba(201,132,106,0.18);
+  /* 💫 softer shadow (less harsh, more dreamy) */
+  box-shadow: 0 18px 40px rgba(201,132,106,0.12);
 
+  /* keep your animation */
   animation: sway 4s ease-in-out infinite;
   transform-origin: center bottom;
 }
