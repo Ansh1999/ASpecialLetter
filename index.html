@@ -712,29 +712,31 @@
   setTimeout(() => bigEnv.classList.add('open'), 380);
 
   setTimeout(() => {
-    document.getElementById('section-landing').classList.remove('fade-in');
-    overlay.style.transition = 'opacity 0.6s ease';
+  // FIRST hide landing completely
+  hideSection('section-landing', () => {
+    currentScreen = 'flowers';
+    updateBackBtn();
+
+    // THEN fade out overlay
+    overlay.style.transition = 'opacity 0.5s ease';
     overlay.style.opacity = '0';
-  }, 2400);
 
-  setTimeout(() => {
-    overlay.classList.remove('opening');
-    overlay.style.opacity = '';
-    overlay.style.transition = '';
+    setTimeout(() => {
+      overlay.classList.remove('opening');
+      overlay.style.opacity = '';
+      overlay.style.transition = '';
 
-    hideSection('section-landing', () => {
-      currentScreen = 'flowers';
-      updateBackBtn();
-
+      // THEN show flowers
       showSection('section-flowers', () => {
-        // only show flowers — no auto move
         setTimeout(() => {
           document.getElementById('bouquetWrap').classList.add('risen');
         }, 300);
       });
-    });
 
-  }, 3100);
+    }, 500); // matches overlay fade duration
+  });
+
+}, 2400);
 } 
   // ── SCROLL REVEAL ──
   function initScrollReveal() {
