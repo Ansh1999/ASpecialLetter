@@ -412,6 +412,17 @@
   transform: translateY(-3px) scale(1.1);
 }
 </style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H3HJYGY361"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-H3HJYGY361');
+</script>
+
 </head>
 <body>
  
@@ -565,6 +576,40 @@
 </section>
  
 <script>
+
+  function trackEvent(name, data = {}) {
+  if (typeof gtag === "function") {
+    gtag('event', name, data);
+  }
+  }
+
+  function trackScreen(screenName) {
+  if (typeof gtag === "function") {
+    gtag('event', 'page_view', {
+      page_title: screenName,
+      page_location: window.location.href + '#' + screenName,
+      page_path: '/' + screenName
+    });
+  }
+}
+
+  let screenStartTime = Date.now();
+  let lastScreen = 'landing';
+
+  function trackTimeSpent(screenName) {
+    const timeSpent = (Date.now() - screenStartTime) / 1000;
+
+    trackEvent('time_spent', {
+      screen: screenName,
+      value: Math.round(timeSpent)
+    });
+  }
+
+  function updateScreen(screenName) {
+    lastScreen = screenName;
+    screenStartTime = Date.now();
+  }
+
   // ── petals ──
   const pc = document.getElementById('petalCanvas');
   const cols = ['#e8c4b0','#c9846a','#d4a090','#f2ddd4','#e0b8a8'];
@@ -654,33 +699,70 @@
  
   // ── BACK ──
   function goBack() {
-    if (currentScreen === 'flowers') {
-      hideSection('section-flowers', () => {
-        currentScreen = 'landing';
-        updateBackBtn();
-        resetEnvelope();
-        resetFlowers();
-        showSection('section-landing');
+
+  // track back click
+  trackEvent('clicked_back', {
+    from: currentScreen
+  });
+
+  if (currentScreen === 'flowers') {
+
+    // ⏱ track time spent on flowers before leaving
+    trackTimeSpent('flowers');
+
+    hideSection('section-flowers', () => {
+      currentScreen = 'landing';
+      updateBackBtn();
+      resetEnvelope();
+      resetFlowers();
+
+      // 📊 track new screen
+      trackScreen('landing');
+      updateScreen('landing');
+
+      showSection('section-landing');
+    });
+
+  } else if (currentScreen === 'letter') {
+
+    // ⏱ track time spent on letter before leaving
+    trackTimeSpent('letter');
+
+    hideSection('section-letter', () => {
+      currentScreen = 'flowers';
+      updateBackBtn();
+      resetLetterAnimations();
+
+      // 📊 track new screen
+      trackScreen('flowers');
+      updateScreen('flowers');
+
+      showSection('section-flowers', () => {
+        setTimeout(() => document.getElementById('bouquetWrap').classList.add('risen'), 200);
       });
-    } else if (currentScreen === 'letter') {
-      hideSection('section-letter', () => {
-        currentScreen = 'flowers';
-        updateBackBtn();
-        resetLetterAnimations();
-        showSection('section-flowers', () => {
-          setTimeout(() => document.getElementById('bouquetWrap').classList.add('risen'), 200);
-        });
+    });
+
+  } else if (currentScreen === 'final') {
+
+    // ⏱ track time spent on final before leaving
+    trackTimeSpent('final');
+
+    hideSection('section-final', () => {
+      currentScreen = 'letter';
+      updateBackBtn();
+      resetFinalAnimations();
+      resetLetterAnimations();
+
+      // 📊 track new screen
+      trackScreen('letter');
+      updateScreen('letter');
+
+      showSection('section-letter', () => { 
+        initScrollReveal(); 
       });
-    } else if (currentScreen === 'final') {
-      hideSection('section-final', () => {
-        currentScreen = 'letter';
-        updateBackBtn();
-        resetFinalAnimations();
-        resetLetterAnimations();
-        showSection('section-letter', () => { initScrollReveal(); });
-      });
-    }
+    });
   }
+}
  
   function resetLetterAnimations() {
     document.querySelectorAll('#section-letter .sr').forEach(el => el.classList.remove('visible'));
@@ -715,6 +797,13 @@
   // FIRST hide landing completely
   hideSection('section-landing', () => {
     currentScreen = 'flowers';
+    trackTimeSpent('landing');
+
+    trackEvent('opened_envelope');
+
+    trackScreen('flowers');
+
+    updateScreen('flowers');
     updateBackBtn();
 
     // THEN fade out overlay
@@ -756,6 +845,15 @@
   function goToFinal() {
     hideSection('section-letter', () => {
       currentScreen = 'final';
+      trackTimeSpent('letter');
+
+      trackEvent('clicked_continue');
+
+      trackEvent('reached_final');
+
+      trackScreen('final');
+
+      updateScreen('final');
       updateBackBtn();
       resetFinalAnimations();
       showSection('section-final', () => {
@@ -773,12 +871,23 @@
   function goToLetter() {
   hideSection('section-flowers', () => {
     currentScreen = 'letter';
+    trackTimeSpent('flowers');
+
+    trackEvent('clicked_tap_to_read');
+
+    trackScreen('letter');
+
+    updateScreen('letter');
     updateBackBtn();
     showSection('section-letter', () => {
       initScrollReveal();
     });
   });
 }
+
+  trackEvent('site_opened');
+  trackScreen('landing');
+
 </script>
 </body>
 </html>
