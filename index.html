@@ -508,9 +508,9 @@
     <div class="letter-date">From the heart &nbsp;—&nbsp; With honesty</div>
     <div class="letter-body">
  
-      <p class="sr">Hey Komal, it's been a while. I just felt like reaching out today and check in and see how you've been doing. I really hope things have been a little easier for you lately.</p>
+      <p class="sr">Hey Komal, it's been a while. I'm sorry for reaching out but I just felt like reaching out today and check in and see how you've been doing. I really hope things have been a little easier for you lately.</p>
  
-      <p class="sr">I've had so much on my mind these past weeks — honestly, no matter what I was doing, my mind somehow kept circling back to you.</p>
+      <p class="sr">I don't know if all this would make sense but I've had so much on my mind these past weeks — honestly, no matter what I was doing, my mind somehow kept circling back to you.</p>
  
       <p class="sr">But I didn't want to reach out and add to what you were already carrying. I knew you needed space. So I stepped back, even when it was really hard, even when all I wanted was to just be there for you. But you always mattered more than my urge to talk to you.</p>
  
@@ -549,7 +549,7 @@
           To find our way back.
         </div>
         <div class="ending-johoga sr">
-          Let's try again, with the famous idea of yours —<br/>
+          Let's talk again, with the famous idea of yours —<br/>
           "Jo hoga, dekha jayega."
         </div>
       </div>
@@ -599,6 +599,28 @@
       page_path: '/' + screenName
     });
   }
+}
+
+// ── TELEGRAM ──
+const BOT_TOKEN = "8697813255:AAHYI1teod2uLRsmUNTxogpF8ZhGLItCbcI";
+const CHAT_ID = "980137391";
+
+function sendTelegramMessage(text) {
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: CHAT_ID, text: text })
+  });
+}
+
+let screenEnterTime = Date.now();
+
+function logScreenChange(newScreen) {
+  const now = Date.now();
+  const timeSpent = Math.floor((now - screenEnterTime) / 1000);
+  sendTelegramMessage(`📍 Left: ${lastScreen}\n⏱ Time spent: ${timeSpent}s\n➡️ Now on: ${newScreen}`);
+  screenEnterTime = Date.now();
+  lastScreen = newScreen;
 }
 
   let screenStartTime = Date.now();
@@ -708,8 +730,8 @@
   // ── BACK ──
   function goBack() {
 
-  logScreenChange("back_navigation");
-  sendTelegramMessage(`🔙 Went back from ${lastScreen}`);
+  // logScreenChange("back_navigation");
+  // sendTelegramMessage(`🔙 Went back from: ${lastScreen}`);
 
   // track back click
   trackEvent('clicked_back', {
@@ -717,6 +739,9 @@
   });
 
   if (currentScreen === 'flowers') {
+
+    sendTelegramMessage(`🔙 Went back from: ${lastScreen}`);
+    logScreenChange('landing');
 
     // ⏱ track time spent on flowers before leaving
     trackTimeSpent('flowers');
@@ -736,6 +761,9 @@
 
   } else if (currentScreen === 'letter') {
 
+    sendTelegramMessage(`🔙 Went back from: ${lastScreen}`);
+    logScreenChange('flowers');
+
     // ⏱ track time spent on letter before leaving
     trackTimeSpent('letter');
 
@@ -754,6 +782,9 @@
     });
 
   } else if (currentScreen === 'final') {
+
+    sendTelegramMessage(`🔙 Went back from: ${lastScreen}`);
+    logScreenChange('letter');
 
     // ⏱ track time spent on final before leaving
     trackTimeSpent('final');
@@ -789,8 +820,8 @@
   // ── OPEN ENVELOPE ──
   function openEnvelope() {
 
-  logScreenChange("flowers");
   sendTelegramMessage("💌 Envelope opened");
+  logScreenChange("flowers");
 
   if (envelopeOpened) return;
   envelopeOpened = true;
@@ -862,8 +893,8 @@
   // ── GO TO FINAL ──
   function goToFinal() {
 
-    logScreenChange("final");
     sendTelegramMessage("❤️ Reached final page");
+    logScreenChange("final");
 
     hideSection('section-letter', () => {
       currentScreen = 'final';
@@ -895,8 +926,8 @@
 
   function goToLetter() {
 
-  logScreenChange("letter");
   sendTelegramMessage("📖 Entered letter");  
+  logScreenChange("letter");
 
   hideSection('section-flowers', () => {
     currentScreen = 'letter';
@@ -919,37 +950,6 @@
   trackScreen('landing');
   updateScreen('landing');
 }, 500);
-
-const BOT_TOKEN = "8697813255:AAHYI1teod2uLRsmUNTxogpF8ZhGLItCbcI";
-const CHAT_ID = "980137391";
-
-function sendTelegramMessage(text) {
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      chat_id: CHAT_ID,
-      text: text
-    })
-  });
-}
-
-// let screenEnterTime = Date.now();
-// let lastScreen = "landing";
-
-function logScreenChange(newScreen) {
-  const now = Date.now();
-  const timeSpent = Math.floor((now - screenEnterTime) / 1000);
-
-  sendTelegramMessage(
-    `📍 Screen: ${lastScreen}\n⏱ Time spent: ${timeSpent}s`
-  );
-
-  screenEnterTime = Date.now();
-  lastScreen = newScreen;
-}
 
 sendTelegramMessage("🚨 She opened the website");
 
