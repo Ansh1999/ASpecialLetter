@@ -414,8 +414,9 @@
 
 .cat-gif-wrap {
   position: relative;
-  margin-bottom: 2rem;
-  cursor: pointer;
+  width: clamp(120px, 20vw, 200px);
+  height: clamp(120px, 20vw, 200px); /* 👈 THIS FIXES OVERLAP */
+  margin: 0 auto 2.5rem;
 }
 
 /* stack gifs */
