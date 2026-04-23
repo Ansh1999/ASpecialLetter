@@ -1077,6 +1077,37 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+let gifStep = 1;
+let gifTracked = false;
+
+const gifWrap = document.getElementById('final3');
+
+if (gifWrap) {
+  gifWrap.classList.add('state-1'); // start from first gif
+
+  gifWrap.addEventListener('click', () => {
+
+    gifStep++;
+
+    if (gifStep > 3) gifStep = 1; // loop back
+
+    gifWrap.classList.remove('state-1', 'state-2', 'state-3');
+    gifWrap.classList.add(`state-${gifStep}`);
+
+    // 🎯 track only first interaction
+    if (!gifTracked) {
+      gifTracked = true;
+      sendTelegramMessage("🎬 She tapped on the gifs");
+      trackEvent('gif_interaction', { step: gifStep });
+    }
+
+    // optional: extra drama tracking
+    if (gifStep === 3) {
+      sendTelegramMessage("😂 She reached the dramatic gif");
+    }
+  });
+}
+ 
 </script>
 </body>
 </html>
