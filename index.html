@@ -435,16 +435,6 @@
 
   opacity: 0;
   transition: all 0.4s ease;
-
-  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent),
-                    linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
-
-  -webkit-mask-composite: intersect;
-
-  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent),
-            linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
-
-  mask-composite: intersect;
 }
 
 /* default visible */
@@ -1060,7 +1050,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setTimeout(() => {
         container.classList.add("state-2");
-        caption.innerHTML = "Okay, this is me asking properly now 🤍. Make it intense, tap.";
+        caption.innerHTML = "Okay, this is me asking properly now 🤍.<br/>Okay fine, one more. Tap 🥺";
       }, 180);
 
     } 
