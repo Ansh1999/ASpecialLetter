@@ -429,8 +429,9 @@
   border-radius: 20px; /* 👈 smooth rounded square */
 
   position: absolute;
+  left: 50%;
   top: 0;
-  left: 0;
+  transform: translateX(-50%);
 
   opacity: 0;
   transition: all 0.4s ease;
@@ -444,8 +445,10 @@
   opacity: 0;
   transform: translateX(-50%) scale(0.9);
 }
+
 #final3.state-2 #gif2 {
   opacity: 1;
+  transform: translateX(-50%) scale(1);
 }
 
 /* step 3 */
@@ -453,6 +456,7 @@
   opacity: 0;
   transform: translateX(-50%) scale(0.9);
 }
+
 #final3.state-3 #gif3 {
   opacity: 1;
   transform: translateX(-50%) scale(1.05);
@@ -640,7 +644,7 @@
   <div class="cat-gif-wrap sr" id="final3">
 
     <!-- videos stacked -->
-    <video id="gif1" src="cat-2.mp4" autoplay loop muted playsinline></video>
+    <video id="gif1" src="cat-2.webm" autoplay loop muted playsinline></video>
     <video id="gif2" src="dog.mp4" autoplay loop muted playsinline></video>
     <video id="gif3" src="spongebob.mp4" autoplay loop muted playsinline></video>
 
