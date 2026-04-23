@@ -411,6 +411,67 @@
 .flower-next:hover {
   transform: translateY(-3px) scale(1.1);
 }
+
+.cat-gif-wrap {
+  position: relative;
+  margin-bottom: 2rem;
+  cursor: pointer;
+}
+
+/* stack gifs */
+.cat-gif-wrap img {
+  width: clamp(120px, 20vw, 200px);
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scale(1);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+/* default visible */
+#gif1 { opacity: 1; }
+
+/* step 2 */
+#final3.state-2 #gif1 {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.9);
+}
+#final3.state-2 #gif2 {
+  opacity: 1;
+}
+
+/* step 3 */
+#final3.state-3 #gif2 {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.9);
+}
+#final3.state-3 #gif3 {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* caption positioning */
+.gif-caption {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  color: var(--muted);
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* show caption */
+#final3.visible .gif-caption {
+  opacity: 1;
+}
+
 </style>
 
 <!-- Google Analytics -->
@@ -570,7 +631,16 @@
   </div>
  
   <div class="cat-gif-wrap sr" id="final3">
-    <img src="somsom1012.gif" alt="🤍"/>
+
+    <!-- gifs stacked -->
+    <img id="gif1" src="cat.mp4" alt="cute"/>
+    <img id="gif2" src="dog.mp4" alt="dog"/>
+    <img id="gif3" src="spongebob.mp4" alt="drama"/>
+
+    <!-- caption -->
+    <div class="gif-caption" id="gifCaption">
+      this is cute… but I can do better 🥺
+    </div>
   </div>
  
   <div class="final-norush sr" id="final4">
@@ -952,6 +1022,37 @@ function logScreenChange(newScreen) {
 }, 500);
 
 sendTelegramMessage("🚨 She opened the website");
+
+let gifState = 1;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("final3");
+  const caption = document.getElementById("gifCaption");
+
+  if (!container) return;
+
+  container.addEventListener("click", () => {
+
+    if (gifState === 1) {
+      gifState = 2;
+
+      setTimeout(() => {
+        container.classList.add("state-2");
+        caption.innerHTML = "okay… this is me asking properly now 🤍";
+      }, 180);
+
+    } else if (gifState === 2) {
+      gifState = 3;
+
+      setTimeout(() => {
+        container.classList.remove("state-2");
+        container.classList.add("state-3");
+        caption.innerHTML = "okay… now I’m slightly overdoing it 😭";
+      }, 180);
+    }
+
+  });
+});
 
 </script>
 </body>
