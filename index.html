@@ -365,7 +365,7 @@
   }
  
   .final-norush {
-    margin-top: 0.8rem;
+    margin-top: 1.2rem;
     font-family: 'Cormorant Garamond', serif; font-style: italic;
     font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 300;
     color: var(--muted); letter-spacing: 0.06em; line-height: 1.8; position: relative; z-index: 1;
@@ -464,6 +464,7 @@
   position: absolute;
   left: 50%;
   top: 0;
+  margin-bottom: 0.5;
   transform: translateX(-50%);
 
   opacity: 0;
@@ -498,7 +499,7 @@
 /* caption positioning */
 .gif-caption {
   position: absolute;
-  bottom: -40px;
+  bottom: -45px;
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Cormorant Garamond', serif;
@@ -1096,7 +1097,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         container.classList.remove("state-2");
         container.classList.add("state-3");
-        caption.innerHTML = "Okay, now I’m slightly overdoing it 😭";
+        caption.innerHTML = "Okay, now I’m slightly overdoing it 😭<br/>";
       }, 180);
     } 
     else {
