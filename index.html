@@ -310,12 +310,12 @@
   .final-bigdeal {
     font-family: 'Cormorant Garamond', serif; font-size: clamp(1.3rem, 3.2vw, 1.75rem);
     font-weight: 300; font-style: italic; color: var(--muted); line-height: 1.65;
-    margin-bottom: 2rem; max-width: 500px; position: relative; z-index: 1;
+    margin-bottom: 1.5rem; max-width: 500px; position: relative; z-index: 1;
   }
   .final-onechance {
     font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 8vw, 5rem);
     font-weight: 300; font-style: italic; color: var(--deep); line-height: 1.08;
-    letter-spacing: -0.01em; margin-bottom: 2rem; position: relative; z-index: 1;
+    letter-spacing: -0.01em; margin-bottom: 1.5rem; position: relative; z-index: 1;
   }
   .cat-gif-wrap { cursor: pointer; margin-bottom: 2rem; position: relative; z-index: 1; }
 
@@ -365,11 +365,11 @@
   }
  
   .final-norush {
-    margin-top: 1rem;
+    margin-top: 0.8rem;
     font-family: 'Cormorant Garamond', serif; font-style: italic;
     font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 300;
     color: var(--muted); letter-spacing: 0.06em; line-height: 1.8; position: relative; z-index: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
   }
  
   @keyframes fadeUp {
@@ -464,6 +464,7 @@
   position: absolute;
   left: 50%;
   top: 0;
+  margin-bottom: 0.2;
   transform: translateX(-50%);
 
   opacity: 0;
@@ -684,7 +685,7 @@
 
     <!-- caption -->
     <div class="gif-caption" id="gifCaption">
-      This is cute, but I can do better. Tap 🥺
+      This is cute, but I can do better.<br/>Tap the cat. 🥺
     </div>
 
   </div>
@@ -1086,7 +1087,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setTimeout(() => {
         container.classList.add("state-2");
-        caption.innerHTML = "Okay, asking properly now. 🤍(one more? fine, tap 🥴)";
+        caption.innerHTML = "Okay, this is me asking properly now. 🤍<br/>(one more? fine, tap 🥴)";
       }, 180);
 
     }
@@ -1106,7 +1107,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         container.classList.remove("state-3");
 
-        caption.innerHTML = "This is cute, but I can do better. Tap 🥺";
+        caption.innerHTML = "This is cute, but I can do better.<br/>Tap the cat. 🥺";
       }, 180);
     }
 
