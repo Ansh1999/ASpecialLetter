@@ -317,7 +317,6 @@
     font-weight: 300; font-style: italic; color: var(--deep); line-height: 1.08;
     letter-spacing: -0.01em; margin-bottom: 1.5rem; position: relative; z-index: 1;
   }
-  .cat-gif-wrap { cursor: pointer; margin-bottom: 2rem; position: relative; z-index: 1; }
 
   @media (hover: hover) {
   .cat-gif-wrap:hover video {
@@ -449,8 +448,11 @@
 .cat-gif-wrap {
   position: relative;
   width: clamp(120px, 20vw, 200px);
-  height: clamp(120px, 20vw, 200px); /* 👈 THIS FIXES OVERLAP */
   margin: 0 auto 2.5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* stack gifs */
@@ -458,17 +460,20 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-
-  border-radius: 20px; /* 👈 smooth rounded square */
+  border-radius: 20px;
 
   position: absolute;
-  left: 50%;
   top: 0;
-  margin-bottom: 0.5;
-  transform: translateX(-50%);
+  left: 0;
 
   opacity: 0;
   transition: all 0.4s ease;
+}
+
+ .cat-gif-wrap::before {
+  content: "";
+  display: block;
+  padding-top: 100%; /* square ratio */
 }
 
 /* default visible */
@@ -498,17 +503,12 @@
 
 /* caption positioning */
 .gif-caption {
-  position: absolute;
-  bottom: -45px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 1.2rem;
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  /*font-size: clamp(0.9rem, 2vw, 1.05rem);*/
   font-size: clamp(0.95rem, 2vw, 1.1rem);
   color: var(--muted);
   text-align: center;
-  white-space: nowrap;
   opacity: 0;
   transition: opacity 0.5s ease;
 }
